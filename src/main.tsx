@@ -14,6 +14,9 @@ async function enableMocking() {
   const { worker } = await import("./test/server");
 
   await worker.start({
+    serviceWorker: {
+      url: "/MatchCock/mockServiceWorker.js",
+    },
     onUnhandledRequest: "bypass",
   });
 }
@@ -27,10 +30,10 @@ createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          <Route index path="/" element={<App />} />
-          <Route path="/Tournament" element={<Tournament />} />
-          <Route path="/Club" element={<Club />} />
-          <Route path="/Schedule" element={<Schedule />} />
+          <Route index path="/MatchCock" element={<App />} />
+          <Route path="/MatchCock/Tournament" element={<Tournament />} />
+          <Route path="/MatchCock/Club" element={<Club />} />
+          <Route path="/MatchCock/Schedule" element={<Schedule />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
