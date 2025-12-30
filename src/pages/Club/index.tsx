@@ -51,7 +51,7 @@ export default function Club() {
     }
 
     const onMakeScheduleButtonClick = () => {
-        navigate("/Schedule")
+        navigate("/MatchCock/Schedule")
     }
 
     const onSearch = (e: FormEvent<HTMLFormElement>) => {
@@ -114,7 +114,7 @@ export default function Club() {
     useEffect(() => {
         if (tournamentId === null) {
             alert("대회가 선택되지 않았습니다.")
-            navigate("/Tournament")
+            navigate("/MatchCock/Tournament")
         }
     }, [tournamentId])
 
