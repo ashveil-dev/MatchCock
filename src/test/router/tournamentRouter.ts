@@ -6,7 +6,7 @@ import fetchTournament from 'test/apis/fetchTournament';
 
 let globalTournamentList: undefined | ITournamentData[] = undefined
 
-const PostTournamentList = http.post<{}, fetchTournamentListBodyType, any>('http://localhost:3000/tournament', async ({ request }) => {
+const PostTournamentList = http.post<{}, fetchTournamentListBodyType, any>('/apis/tournament', async ({ request }) => {
     function dateStringToDate(dateString: string) {
         const tempDate = new Date();
         const year = parseInt(dateString.slice(0, 4), 10)
@@ -83,7 +83,7 @@ const PostTournamentList = http.post<{}, fetchTournamentListBodyType, any>('http
     }
 })
 
-const GetTournament = http.get<TournamentParamsType, any>("http://localhost:3000/tournament/:id", async ({ params }) => {
+const GetTournament = http.get<TournamentParamsType, any>("/apis/tournament/:id", async ({ params }) => {
     const { id } = params;
 
     if (id === undefined) {

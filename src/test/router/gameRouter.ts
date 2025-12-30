@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw'
 import fetchGameList from "test/apis/fetchGameList";
 
-const GetGame = http.get("http://localhost:3000/game/list", async ({request}) => {
+const GetGame = http.get("/apis/game/list", async ({request}) => {
     const url = new URL(request.url)
     const tournamentId = url.searchParams.get("tournamentId") as string | undefined;
 
