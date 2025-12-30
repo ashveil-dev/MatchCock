@@ -8,20 +8,14 @@ import Tournament from '@pages/Tournament/index'
 import Club from "@pages/Club";
 import Schedule from "@pages/Schedule";
 
-async function enableMocking() {
-  if (!import.meta.env.DEV) return;
+const { worker } = await import("./test/server");
 
-  const { worker } = await import("./test/server");
-
-  await worker.start({
-    serviceWorker: {
-      url: "/MatchCock/mockServiceWorker.js",
-    },
-    onUnhandledRequest: "bypass",
-  });
-}
-
-enableMocking();
+await worker.start({
+  serviceWorker: {
+    url: "/MatchCock/mockServiceWorker.js",
+  },
+  onUnhandledRequest: "bypass",
+});
 
 const queryClient = new QueryClient();
 
