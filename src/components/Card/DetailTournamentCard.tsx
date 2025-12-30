@@ -26,7 +26,7 @@ function DetailTournamentCard({
             alert("올바르지 않은 대회 설정입니다.")
         } else {
             setTournamentId(tournament.TOURNAMENT_ID);
-            navigate("/Club")
+            navigate("/MatchCock/Club")
         }
         exitModal();
     }
