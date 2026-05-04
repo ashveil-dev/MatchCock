@@ -17,6 +17,7 @@
     "@types/react-slick": "^0.23.13",
     "axios": "^1.13.2",
     "clsx": "^2.1.1",
+    "immer": "^11.1.6",
     "motion": "^12.23.24",
     "msw": "^2.12.7",
     "react": "^19.1.1",
@@ -28,6 +29,7 @@
     "slick-carousel": "^1.8.1",
     "tailwindcss": "^4.1.16",
     "vite-tsconfig-paths": "^5.1.4",
+    "zukeeper": "^1.0.2",
     "zustand": "^5.0.9"
   },
   "devDependencies": {
