@@ -1,4 +1,5 @@
 import { create } from "zustand"
+import { persist } from "zustand/middleware"
 import { immer } from "zustand/middleware/immer"
 import type { StateCreator, StoreMutatorIdentifier } from "zustand"
 import zukeeper from "zukeeper"
@@ -15,12 +16,14 @@ type Action = {
 
 type StateWithAction = State & Action
 
-const createTournamentSlice: StateCreator<StateWithAction, [], []> = (set) => ({
-    tournamentId: null,
-    checked: [],
-    setTournamentId: (_tournamentId : State["tournamentId"]) => set(() => ({ tournamentId: _tournamentId })),
-    setChecked: (func: ((_checked: State["checked"]) => State["checked"])) => set((state) => ({ checked: [...func(state.checked)] })
-)})
+const createTournamentSlice: StateCreator<StateWithAction, [], [["zustand/persist", StateWithAction]]> = (set) => (
+    {
+        tournamentId: null,
+        checked: [],
+        setTournamentId: (_tournamentId: State["tournamentId"]) => set(() => ({ tournamentId: _tournamentId })),
+        setChecked: (func: ((_checked: State["checked"]) => State["checked"])) => set((state) => ({ checked: [...func(state.checked)] }))
+    }
+)
 
 type ZukeeperTS = <
     T extends State,
@@ -41,11 +44,16 @@ const zukeeperTs: ZukeeperTSImplType = (...a) => {
 export const zukeeperTsLogger = zukeeperTs as unknown as ZukeeperTS
 
 const useTournamentStore = create<StateWithAction>()(
-    immer(
-        zukeeperTsLogger((...a) => ({
-            ...createTournamentSlice(...a),
-        })),
-    ),
+    persist(
+        immer(
+            zukeeperTsLogger((...a) => ({
+                ...createTournamentSlice(...a),
+            })),
+        ),
+        {
+            name: "tournament-storage"
+        }
+    )
 )
 
 declare global {
