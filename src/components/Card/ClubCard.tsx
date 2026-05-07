@@ -20,23 +20,25 @@ export default function ClubCard({
     const ref = useRef<HTMLDivElement>(null)
     const [isSelectAll, setIsSelectAll] = useState(false);
 
-    const onSelectTeam = useCallback((entryId: string | null) => () => {
-        if (entryId === null) return;
+    const onSelectTeam = useCallback((entryId: string | null, eventId : string | null) => () => {
+        if (entryId === null || eventId === null) return;
 
-        if (checkedList.includes(entryId)) {
-            setCheckedList(_checked => _checked.filter(c => c !== entryId));
+        const id = `${eventId}-${entryId}`;
+
+        if (checkedList.includes(id)) {
+            setCheckedList(_checked => _checked.filter(c => c !== id));
         } else {
-            setCheckedList(_checked => ([..._checked, entryId]))
+            setCheckedList(_checked => ([..._checked, id]))
         }
     }, [checkedList])
 
     const onSelectAllButtonClicked = () => {
         if (club.teams === undefined) return;
         if (isSelectAll) {
-            setCheckedList(_checkedList => _checkedList.filter(entry => !club.teams?.map(team => team.ENTRY_ID).includes(entry)))
+            setCheckedList(_checkedList => _checkedList.filter(entry => !club.teams?.map(team => `${team.EVENT_ID}-${team.ENTRY_ID}`).includes(entry)))
         } else {
             const newCheckedList = new Set(checkedList);
-            club.teams.forEach(team => team.ENTRY_ID !== null && newCheckedList.add(team.ENTRY_ID))
+            club.teams.forEach(team => team.ENTRY_ID !== null && team.EVENT_ID !== null && newCheckedList.add(`${team.EVENT_ID}-${team.ENTRY_ID}`))
             setCheckedList(_checkedList => [...newCheckedList])
         }
     
@@ -44,7 +46,7 @@ export default function ClubCard({
     }
 
     useEffect(() => {
-        if (club.teams?.every(team => team.ENTRY_ID != null && checkedList.includes(team.ENTRY_ID))) {
+        if (club.teams?.every(team => team.ENTRY_ID != null && team.EVENT_ID != null && checkedList.includes(`${team.EVENT_ID}-${team.ENTRY_ID}`))) {
             setIsSelectAll(true);
         } else {
             setIsSelectAll(false)
@@ -99,13 +101,13 @@ export default function ClubCard({
                 {club.teams && club.teams.map(team => team.ENTRY_ID !== null && (
                     <div
                         key={team.ENTRY_ID}
-                        onClick={onSelectTeam(team.ENTRY_ID)}
+                        onClick={onSelectTeam(team.ENTRY_ID, team.EVENT_ID)}
                         className={clsx("grid grid-cols-4 md:grid-cols-5 p-3 cursor-pointer text-center ",
-                            checkedList.includes(team.ENTRY_ID) ? "bg-black/70 text-white" : "bg-white text-black"
+                            checkedList.includes(`${team.EVENT_ID}-${team.ENTRY_ID}`) ? "bg-black/70 text-white" : "bg-white text-black"
                         )}
                     >
                         <span>
-                            <input className="cusor-pointer" type="checkbox" checked={checkedList.includes(team.ENTRY_ID)} />
+                            <input className="cusor-pointer" type="checkbox" checked={checkedList.includes(`${team.EVENT_ID}-${team.ENTRY_ID}`)} />
                         </span>
                         <span>
                             {team.AGE}대
