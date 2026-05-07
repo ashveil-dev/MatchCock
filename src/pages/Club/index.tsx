@@ -123,8 +123,6 @@ export default function Club() {
             return undefined;
         }
 
-        
-
         setTournament(data?.data?.tournament.map(club => ({
             name: club[0].CLUB_NM1 ? club[0].CLUB_NM1 : "noname",
             isFold: true,

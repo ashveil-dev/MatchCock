@@ -28,7 +28,7 @@ export default function ClubCard({
         } else {
             setCheckedList(_checked => ([..._checked, entryId]))
         }
-    }, [])
+    }, [checkedList])
 
     const onSelectAllButtonClicked = () => {
         if (club.teams === undefined) return;
