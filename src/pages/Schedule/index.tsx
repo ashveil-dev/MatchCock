@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import fetchGameList from "apis/fetchGameList";
 import Spinner from "@assets/images/Spinner2.gif"
 
-function planDateToString(planDate: string, type : string[]) {
+function planDateToString(planDate: string, type: string[]) {
     const year = planDate.slice(0, 4)
     const month = planDate.slice(4, 6)
     const date = planDate.slice(6, 8)
@@ -96,11 +96,14 @@ export default function Schedule() {
                                 </article>
                                 {
                                     data && data.gameList && data.gameList.data_list
-                                        .filter(match => checked.includes(match.TEAM1_ENTRY_ID) || checked.includes(match.TEAM2_ENTRY_ID))
+                                        .filter(match => checked.includes(`${match.EVENT_ID}-${match.TEAM1_ENTRY_ID}`) || checked.includes(`${match.EVENT_ID}-${match.TEAM2_ENTRY_ID}`))
                                         .map(match =>
                                         (
                                             <>
-                                                <article className="w-full hidden md:grid md:grid-cols-6 text-center px-4 py-4 odd:bg-FairyBlue/10">
+                                                <article
+                                                    className="w-full hidden md:grid md:grid-cols-6 text-center px-4 py-4 odd:bg-FairyBlue/10"
+                                                    key={`${match.EVENT_ID}-${match.TEAM1_ENTRY_ID}-${match.TEAM2_ENTRY_ID}`}
+                                                >
                                                     <span>{planDateToString(match.PLAN_DATE, ["년 ", "월 ", "일"])}</span>
                                                     <span>{timeToString(match.START_TIME)}</span>
                                                     <span>{match.COURT_NO}번</span>
@@ -119,7 +122,7 @@ export default function Schedule() {
                             <section id="schedule-table" className="w-full md:hidden">
                                 {
                                     data && data.gameList && data.gameList.data_list
-                                        .filter(match => checked.includes(match.TEAM1_ENTRY_ID) || checked.includes(match.TEAM2_ENTRY_ID))
+                                        .filter(match => checked.includes(`${match.EVENT_ID}-${match.TEAM1_ENTRY_ID}`) || checked.includes(`${match.EVENT_ID}-${match.TEAM2_ENTRY_ID}`))
                                         .map(match =>
                                         (
                                             <article className="w-full flex flex-col md:hidden mb-4 max-w-[300px] mx-auto shadow-xl rounded-lg overflow-hidden border border-gray-100">
