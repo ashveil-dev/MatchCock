@@ -4,6 +4,8 @@ import type { fetchTournamentListBodyType, TournamentParamsType } from "test/typ
 import fetchTournamentList from 'test/apis/fetchTournamentList';
 import fetchTournament from 'test/apis/fetchTournament';
 
+const ContentNum = 12;
+
 let globalTournamentList: undefined | ITournamentData[] = undefined
 
 const PostTournamentList = http.post<{}, fetchTournamentListBodyType, any>('/apis/tournament', async ({ request }) => {
@@ -54,8 +56,8 @@ const PostTournamentList = http.post<{}, fetchTournamentListBodyType, any>('/api
             if (pageNumber) {
                 return HttpResponse.json({
                     data: {
-                        tournamentList: tournamentList.slice(10 * (pageNumber - 1), 10 * (pageNumber)),
-                        lastPage: Math.ceil(tournamentList.length / 10)
+                        tournamentList: tournamentList.slice(ContentNum * (pageNumber - 1), ContentNum * (pageNumber)),
+                        lastPage: Math.ceil(tournamentList.length / ContentNum)
                     }
                 })
             }
@@ -66,8 +68,8 @@ const PostTournamentList = http.post<{}, fetchTournamentListBodyType, any>('/api
             if (cursor !== undefined) {
                 return HttpResponse.json({
                     data: {
-                        tournamentList: tournamentList.slice(cursor, cursor + 10),
-                        nextCursor: tournamentList.length > cursor + 10 ? cursor + 11 : null
+                        tournamentList: tournamentList.slice(cursor, cursor + ContentNum),
+                        nextCursor: tournamentList.length > cursor + ContentNum ? cursor + ContentNum + 1 : null
                     }
                 })
             }
