@@ -18,13 +18,14 @@ function DetailTournamentCard({
     exitModal
 }: IProps) {
     if (tournament === undefined) return <></>;
-    const { setTournamentId } = useTournamentStore()
+    const { setTournamentId, setChecked } = useTournamentStore()
     const navigate = useNavigate();
 
     const onSelectButtonClicked = () => {
         if(tournament.TOURNAMENT_ID === null) {
             alert("올바르지 않은 대회 설정입니다.")
         } else {
+            setChecked(() => [])
             setTournamentId(tournament.TOURNAMENT_ID);
             navigate("/MatchCock/Club")
         }
