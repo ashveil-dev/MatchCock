@@ -1,4 +1,5 @@
 import { FaAnglesLeft, FaChevronLeft, FaChevronRight, FaAnglesRight } from "react-icons/fa6";
+import clsx from "clsx";
 
 interface IPagenation {
     pageUnit?: number,
@@ -43,7 +44,11 @@ export default function Pagenation({
                         <button
                             key={i}
                             onClick={pageMove((i + 1) + (Math.floor(pageNumber / (pageUnit + 1)) * pageUnit))}
-                            className="w-5 h-5 p-2 font-bold  box-content border border-gray-200 text-black rounded-lg cursor-pointer hover:bg-black hover:text-white">
+                            className={
+                                clsx(
+                                    "w-5 h-5 p-2 font-bold  box-content border border-gray-200 text-black rounded-lg cursor-pointer hover:bg-black hover:text-white",
+                                    pageNumber === ((i + 1) + (Math.floor(pageNumber / (pageUnit + 1)) * pageUnit)) ? "bg-black text-white" :" bg-white text-black"
+                            )}>
                             {(i + 1) + (Math.floor(pageNumber / (pageUnit + 1)) * pageUnit)}
                         </button>
                     )
