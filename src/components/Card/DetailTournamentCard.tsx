@@ -2,11 +2,13 @@ import { FaCompressAlt } from "react-icons/fa";
 import type { ITournamentData } from "@type/tournament";
 import { useNavigate } from "react-router";
 import Slider from "react-slick"
+import { fetchTournament } from "@apis";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import clsx from "clsx"
 import useTournamentStore from "@stores/useTournamentStore";
+import { useQuery } from "@tanstack/react-query";
 
 interface IProps {
     tournament: ITournamentData | undefined,
@@ -20,9 +22,13 @@ function DetailTournamentCard({
     if (tournament === undefined) return <></>;
     const { setTournamentId, setChecked } = useTournamentStore()
     const navigate = useNavigate();
+    const { isLoading, isFetching, data } = useQuery({
+        queryKey: ["tournament", tournament.TOURNAMENT_ID],
+        queryFn: () => fetchTournament({ tournamentId: tournament.TOURNAMENT_ID })
+    })
 
     const onSelectButtonClicked = () => {
-        if(tournament.TOURNAMENT_ID === null) {
+        if (tournament.TOURNAMENT_ID === null) {
             alert("올바르지 않은 대회 설정입니다.")
         } else {
             setChecked(() => [])
@@ -235,10 +241,17 @@ function DetailTournamentCard({
                         <a href={tournament.TM_OUTLINE_FILE_URL ?? undefined} target="_blank" className="inline-flex items-center justify-center rounded-xl border px-4 py-2 text-sm font-medium text-gray-700 hover:bg-white">
                             안내문 보기
                         </a>
-                        <button 
+                        <button
                             onClick={onSelectButtonClicked}
-                            className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500">
-                            대회 선택하기
+                            disabled={data?.data?.tournament.length === 0}
+                            className={
+                                clsx(
+                                    data?.data?.tournament.length === 0 ? "opacity-40 hover:bg-indigo-600" : "opacity-100 cursor-pointer",
+                                    "inline-flex items-center justify-center rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500",
+                                )
+                            }>
+                                {data?.data?.tournament.length === 0 ? "명단 공개 전" : "자세히 보기"
+                            }
                         </button>
                     </div>
                 </section>
